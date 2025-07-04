@@ -79,6 +79,18 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+## 💻 Acessando a Aplicação
+
+### Interface Web
+- Acesse `http://localhost:8000` para visualizar a interface web
+- A página inicial exibe a lista de projetos cadastrados
+
+### Painel Administrativo
+- Acesse `http://localhost:8000/admin` para o painel administrativo
+- Use as credenciais do superusuário criado anteriormente
+- Gerencie projetos, atividades e colaboradores
+
+
 ## 🔑 Autenticação
 
 O sistema utiliza autenticação baseada em Token. Para obter um token:
