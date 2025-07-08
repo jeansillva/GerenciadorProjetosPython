@@ -9,7 +9,8 @@ router.register(r'atividades', views.AtividadeViewSet)
 router.register(r'colaboradores', views.ColaboradorViewSet)
 
 urlpatterns = [
-    path('', views.lista_projetos, name='lista_projetos'),
+    path('', views.login_page, name='login'),
+    path('projetos/', views.lista_projetos, name='lista_projetos'),
     path('api/', include(router.urls)),
     path('api-token-auth/', token_views.obtain_auth_token, name='api-token'),
 ]
