@@ -1,0 +1,95 @@
+{% extends 'projetos/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+        <h2 class="h3 mb-3 mb-md-0">Atividades do Projeto: {{ projeto.nome }}</h2>
+        <div class="btn-group-responsive">
+            <a href="{% url 'criar_atividade' projeto.id %}" class="btn btn-primary btn-responsive">Nova Atividade</a>
+            <a href="{% url 'detalhes_projeto' projeto.id %}" class="btn btn-secondary btn-responsive">Voltar ao Projeto</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            {% if atividades %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th class="d-none d-md-table-cell">Descrição</th>
+                        <th>Responsável</th>
+                        <th>Status</th>
+                        <th class="d-none d-lg-table-cell">Última Atualização</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for atividade in atividades %}
+                    <tr>
+                        <td>
+                            <div class="fw-medium">{{ atividade.nome }}</div>
+                            <div class="d-block d-md-none">
+                                <small class="text-muted">{{ atividade.descricao|truncatewords:5 }}</small>
+                            </div>
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            {{ atividade.descricao|truncatewords:10 }}
+                        </td>
+                        <td>
+                            {% if atividade.responsavel %}
+                            {{ atividade.responsavel.nome }}
+                            {% else %}
+                            <span class="text-muted">Não atribuído</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                                        <span class="badge {% if atividade.concluida %}bg-success{% else %}bg-warning{% endif %}">
+                                            {{ atividade.concluida|yesno:"Concluída,Pendente" }}
+                                        </span>
+                            <div class="d-block d-lg-none mt-1">
+                                <small class="text-muted">
+                                    {{ atividade.data_atualizacao|date:"d/m/Y H:i" }}
+                                </small>
+                            </div>
+                        </td>
+                        <td class="d-none d-lg-table-cell">
+                            {{ atividade.data_atualizacao|date:"d/m/Y H:i" }}
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group-responsive">
+                                <a href="{% url 'editar_atividade' atividade.id %}"
+                                   class="btn btn-warning btn-responsive">
+                                    Editar
+                                </a>
+                                <form method="post"
+                                      action="{% url 'toggle_atividade' atividade.id %}"
+                                      class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="btn btn-{% if atividade.concluida %}secondary{% else %}success{% endif %} btn-responsive">
+                                        {% if atividade.concluida %}
+                                        Reabrir
+                                        {% else %}
+                                        Concluir
+                                        {% endif %}
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info mb-0">
+                <span>Nenhuma atividade cadastrada para este projeto.</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

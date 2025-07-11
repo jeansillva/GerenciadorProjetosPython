@@ -139,3 +139,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]
+
+# Configurações de autenticação
+LOGIN_URL = 'login'  # URL para onde redirecionar quando precisar de autenticação
+LOGIN_REDIRECT_URL = 'lista_projetos'  # URL para onde redirecionar após o login bem-sucedido
+LOGOUT_REDIRECT_URL = 'login'  # URL para onde redirecionar após o logout
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
