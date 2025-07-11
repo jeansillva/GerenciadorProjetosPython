@@ -1,25 +1,66 @@
 {% extends 'projetos/base.html' %}
 
 {% block content %}
-  <h2>Lista de Projetos</h2>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Nome</th>
-        <th>Descrição</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for projeto in projetos %}
-        <tr>
-          <td>{{ projeto.nome }}</td>
-          <td>{{ projeto.descricao }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="2">Nenhum projeto cadastrado.</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <h2 class="h3 mb-3 mb-md-0">Lista de Projetos</h2>
+    <a href="{% url 'criar_projeto' %}" class="btn btn-primary btn-responsive">Novo Projeto</a>
+  </div>
+
+  <div class="row">
+    {% for projeto in projetos %}
+    <div class="col-12 col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">{{ projeto.nome }}</h5>
+            {% if user == projeto.owner %}
+            <span class="badge bg-primary">Proprietário</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{ projeto.descricao|truncatewords:30 }}</p>
+          <div class="mb-2">
+            <strong>Data Início:</strong> {{ projeto.data_inicio|date:"d/m/Y" }}
+          </div>
+          {% if projeto.data_fim %}
+          <div class="mb-2">
+            <strong>Data Fim:</strong> {{ projeto.data_fim|date:"d/m/Y" }}
+          </div>
+          {% endif %}
+          <div class="mb-2">
+            <strong>Responsáveis:</strong>
+            <ul class="list-unstyled mb-0">
+              {% for responsavel in projeto.responsaveis.all %}
+              <li>
+                {{ responsavel.get_full_name|default:responsavel.username }}
+                {% if responsavel == projeto.owner %}
+                <small class="text-muted">(Proprietário)</small>
+                {% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="mb-3">
+            <strong>Atividades:</strong> {{ projeto.atividades.count }}
+          </div>
+          <div class="btn-group-responsive">
+            <a href="{% url 'detalhes_projeto' projeto.id %}" class="btn btn-info btn-responsive">Ver Detalhes</a>
+            <a href="{% url 'atividades_projeto' projeto.id %}" class="btn btn-success btn-responsive">Atividades</a>
+            <a href="{% url 'editar_projeto' projeto.id %}" class="btn btn-warning btn-responsive">Editar</a>
+            <a href="{% url 'remover_projeto' projeto.id %}" class="btn btn-danger btn-responsive">Remover</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info">
+        Nenhum projeto cadastrado.
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'projetos/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h2 class="h3 mb-0">{{ projeto.nome }}</h2>
+                <div class="btn-group-responsive mt-2 mt-md-0">
+                    <a href="{% url 'editar_projeto' projeto.id %}" class="btn btn-warning btn-responsive">Editar</a>
+                    <a href="{% url 'remover_projeto' projeto.id %}" class="btn btn-danger btn-responsive">Remover</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Informações Básicas</h5>
+                            <p class="card-text"><strong>Descrição:</strong></p>
+                            <p class="card-text">{{ projeto.descricao }}</p>
+                            <p class="card-text">
+                                <strong>Data Início:</strong> {{ projeto.data_inicio|date:"d/m/Y" }}
+                            </p>
+                            {% if projeto.data_fim %}
+                            <p class="card-text">
+                                <strong>Data Fim:</strong> {{ projeto.data_fim|date:"d/m/Y" }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Responsáveis</h5>
+                            <div class="list-group">
+                                {% for responsavel in projeto.responsaveis.all %}
+                                <div class="list-group-item">
+                                    {{ responsavel.get_full_name|default:responsavel.username }}
+                                    {% if responsavel == projeto.owner %}
+                                    <span class="badge bg-primary">Proprietário</span>
+                                    {% endif %}
+                                </div>
+                                {% empty %}
+                                <div class="list-group-item text-muted">
+                                    Nenhum responsável definido
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center text-md-start">
+                <div class="btn-group-responsive">
+                    <a href="{% url 'atividades_projeto' projeto.id %}" class="btn btn-success btn-responsive">
+                        Ver Todas as Atividades
+                    </a>
+                    <a href="{% url 'lista_projetos' %}" class="btn btn-secondary btn-responsive">
+                        Voltar para Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -8,25 +8,41 @@ Um sistema de gerenciamento de projetos desenvolvido com Django e Django REST Fr
 ### Projetos
 - Criação, visualização, atualização e exclusão de projetos
 - Campos disponíveis:
-    - Nome
-    - Descrição
-    - Data de início
-    - Data de fim (opcional)
+  - Nome
+  - Descrição
+  - Data de início
+  - Data de fim (opcional)
+  - Proprietário (usuário que criou)
+  - Responsáveis (múltiplos usuários)
 
 ### Atividades
 - Gerenciamento completo de atividades vinculadas a projetos
 - Campos disponíveis:
-    - Nome
-    - Descrição
-    - Projeto vinculado
-    - Responsável (opcional)
-    - Status de conclusão
+  - Nome
+  - Descrição
+  - Projeto vinculado
+  - Responsável (colaborador)
+  - Status de conclusão
+  - Data de criação (automática)
+  - Data de última atualização (automática)
 
 ### Colaboradores
 - Cadastro e gerenciamento de colaboradores
 - Campos disponíveis:
     - Nome
     - Email (único)
+
+## Permissões e Controle de Acesso
+
+- Apenas usuários autenticados podem acessar o sistema
+- Cada projeto possui um proprietário (owner)
+- Apenas o proprietário pode:
+  - Remover o projeto
+  - Editar informações básicas do projeto
+- Responsáveis podem:
+  - Visualizar o projeto
+  - Gerenciar atividades
+  - Ver detalhes e estatísticas
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -35,6 +51,7 @@ Um sistema de gerenciamento de projetos desenvolvido com Django e Django REST Fr
 - Django REST Framework 3.14+
 - SQLite (banco de dados)
 - Django CORS Headers
+- Bootstrap 5 (interface responsiva)
 
 ## 📋 Pré-requisitos
 
@@ -81,9 +98,9 @@ python manage.py runserver
 
 ## 💻 Acessando a Aplicação
 
-### Interface Web
+### Interface Web Responsiva
 - Acesse `http://localhost:8000` para visualizar a interface web
-- A página inicial exibe a lista de projetos cadastrados
+- A página inicial exibe uma tela de login (Use as credenciais do superusuário criado anteriormente)
 
 ### Painel Administrativo
 - Acesse `http://localhost:8000/admin` para o painel administrativo
@@ -128,14 +145,14 @@ Authorization: Token SEU_TOKEN_AQUI
 - `PUT /api/colaboradores/{id}/` - Atualiza um colaborador
 - `DELETE /api/colaboradores/{id}/` - Remove um colaborador
 
-## 📦 Exemplos de Uso
+## 📦 Exemplos de Uso - Recomendamos o uso pela web
 
 ### Criando um Projeto
 ```bash
 curl -X POST http://localhost:8000/api/projetos/
 -H "Authorization: Token seu_token_aqui"
 -H "Content-Type: application/json"
--d '{ "nome": "Novo Projeto", "descricao": "Descrição do projeto", "data_inicio": "2024-07-03", "data_fim": "2024-12-31" }'
+-d '{ "nome": "Novo Projeto", "descricao": "Descrição do projeto", "data_inicio": "2025-10-07", "data_fim": "2025-10-15" }'
 ```
 
 ### Criando uma Atividade

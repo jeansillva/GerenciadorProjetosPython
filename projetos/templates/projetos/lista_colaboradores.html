@@ -1,0 +1,71 @@
+{% extends 'projetos/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+        <h2 class="h3 mb-3 mb-md-0">Colaboradores</h2>
+        <a href="{% url 'criar_colaborador' %}" class="btn btn-primary btn-responsive">Novo Colaborador</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for colaborador in colaboradores %}
+                    <tr>
+                        <td>{{ colaborador.nome }}</td>
+                        <td>{{ colaborador.email }}</td>
+                        <td class="text-end">
+                            <div class="btn-group-responsive">
+                                <a href="{% url 'editar_colaborador' colaborador.id %}"
+                                   class="btn btn-warning btn-responsive">Editar</a>
+                                <button type="button"
+                                        class="btn btn-danger btn-responsive"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal{{ colaborador.id }}">
+                                    Remover
+                                </button>
+                            </div>
+
+                            <div class="modal fade" id="deleteModal{{ colaborador.id }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Confirmar Remoção</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Tem certeza que deseja remover o colaborador "{{ colaborador.nome }}"?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <form method="post" action="{% url 'remover_colaborador' colaborador.id %}" class="d-inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">Confirmar Remoção</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center">Nenhum colaborador cadastrado.</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
