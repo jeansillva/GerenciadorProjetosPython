@@ -1,4 +1,8 @@
+# Integrantes:
 
+- Jean Carlos Oliveira da Silva
+- Renato Cabral Rodrigues de Souza
+  
 # Gerenciador de Projetos
 
 Um sistema de gerenciamento de projetos desenvolvido com Django e Django REST Framework, permitindo o controle de projetos, atividades e colaboradores.
